@@ -6,12 +6,13 @@ import java.util.Random;
 import javafx.scene.layout.Pane;
 
 public class Reseau extends Pane {
-    public Moto m = new Moto("Yamaha"); 
+    public Moto m ; 
     public ArrayList<Integer> savedPosx = new ArrayList<>() ; 
     public ArrayList<Integer> savedPosy = new ArrayList<>() ;
     ArrayList<Integer> excludeRowsx = new ArrayList<>();
     ArrayList<Integer> excludeRowsy = new ArrayList<>();
     public ArrayList<Cities> cities = new ArrayList<>() ; 
+    public ArrayList<Route> routes = new ArrayList<>() ;
     Random rand = new Random(); 
     public int posx = 0 , posy = 0 ; 
 
@@ -22,8 +23,9 @@ public class Reseau extends Pane {
         "-fx-border-insets: 5;" +
         "-fx-border-radius: 5;" +
         "-fx-border-color: blue;");
-        getChildren().add(m.ball);
         createCity(); 
+        m = new Moto("Jenaj", routes.get(0).posx_begin, routes.get(0).posy_begin);
+        getChildren().add(m.ball);
         //rintexclusions();
     }
     public void createCity(){
@@ -50,7 +52,8 @@ public class Reseau extends Pane {
           int j = 1 ; 
           for(Cities c : cities){
             if (i<7 && j<7){
-                getChildren().add(new Route(savedPosx.get(i), savedPosy.get(i) , savedPosx.get(j),savedPosy.get(j))); 
+                routes.add(new Route(savedPosx.get(i), savedPosy.get(i) , savedPosx.get(j),savedPosy.get(j)));
+                getChildren().add(routes.get(i)); 
                 i++;
                 j++;
             }
