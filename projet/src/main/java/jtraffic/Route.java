@@ -11,8 +11,8 @@ import javafx.scene.shape.StrokeType;
 
 public class Route extends Line{
 
- /* public double posx_begin  ;
-  public double posy_begin  ; */ 
+  public double posx_begin  ;
+  public double posy_begin  ; 
   public double posx_end  ; 
   public double posy_end  ;
   //Line line1 = new Line();
@@ -20,13 +20,16 @@ public class Route extends Line{
     
   public Route(double posx_begin , double posy_begin , double posx_end , double posy_end){
     super(posx_begin +91,  posy_begin+65 ,posx_end +91 , posy_end+65 );
+    this.posx_begin = posx_begin+91; 
+    this.posy_begin = posy_begin+65;
     setFill(Color.BLACK);
     setStroke(Color.RED);
     setStrokeWidth(10);
     setStrokeType(StrokeType.CENTERED);
     setStrokeLineCap(StrokeLineCap.ROUND);
     setStrokeLineJoin(StrokeLineJoin.ROUND);
-   /*  setX(posx_begin+91);
+   /*  setX(posx_begin+91);mvn compile exec:java -X
+
     setY(posy_begin+65);
     setArcWidth(30.0); 
     setArcHeight(20.0);  
@@ -38,8 +41,8 @@ public class Route extends Line{
     
     */
 
-    this.posx_end = posx_end ; 
-    this.posy_end = posy_end ;
+    this.posx_end = posx_end +91 ; 
+    this.posy_end = posy_end + 65;
     
    /* line1.setStartX(posx_begin+91);
     line1.setStartY(posy_begin+65);

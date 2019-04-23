@@ -28,7 +28,7 @@ import javafx.util.Duration;
 public class Frame extends Application{
   static final double W = 1640;
 static final double H = 880;
-
+      public Thread m ; 
     @Override
     public void start(Stage stage) throws Exception {
         
@@ -78,11 +78,11 @@ static final double H = 880;
         stage.setScene(scene);
         stage.show();
        
-
-       //p.m.play(p.r);
- 
+      
+        p.m.play(p.routes);
        
-       
+      
+     
     }
     
      
@@ -91,6 +91,7 @@ static final double H = 880;
       @Override
       public void handle(ActionEvent arg0) {
         Platform.exit();
+      
       }
     }
 }
