@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class Reseau extends Pane {
     public Moto m ; 
@@ -13,9 +14,10 @@ public class Reseau extends Pane {
     ArrayList<Integer> excludeRowsy = new ArrayList<>();
     public ArrayList<Cities> cities = new ArrayList<>() ; 
     public ArrayList<Route> routes = new ArrayList<>() ;
+    public ArrayList<Route> departementales = new ArrayList<>() ;
     Random rand = new Random(); 
     public int posx = 0 , posy = 0 ; 
-
+    
     public Reseau(){
         setStyle( "-fx-padding: 10;" +
         "-fx-border-style: solid inside;" +
@@ -52,12 +54,16 @@ public class Reseau extends Pane {
           int j = 1 ; 
           for(Cities c : cities){
             if (i<7 && j<7){
-                routes.add(new Route(savedPosx.get(i), savedPosy.get(i) , savedPosx.get(j),savedPosy.get(j)));
+                routes.add(new Route(savedPosx.get(i), savedPosy.get(i) , savedPosx.get(j),savedPosy.get(j),Color.RED ,10));
                 getChildren().add(routes.get(i)); 
                 i++;
                 j++;
             }
             
+          }
+          for(int k = 0 ; k<10 ; k++){
+            departementales.add(new Route(savedPosx.get(rand.nextInt(6)), savedPosy.get(rand.nextInt(6)) , savedPosx.get(rand.nextInt(6)),savedPosy.get(rand.nextInt(6)),Color.GOLD ,2));
+            getChildren().add(departementales.get(k)); 
           }
         
     }

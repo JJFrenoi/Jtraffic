@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import com.sun.marlin.IntArrayCache;
 
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
@@ -33,7 +35,7 @@ public class Moto  {
   public Circle ball = new Circle(7, Color.RED);
         
  //public  Bounds bounds ;
- public Timeline timeline = new Timeline();
+ public ArrayList<Timeline> timeline = new ArrayList<>();
  
   
   public Moto(String name , double posx , double posy ) {
@@ -69,17 +71,22 @@ public class Moto  {
       public void play(ArrayList<Route> routes ){
         // bounds = p.getBoundsInLocal();
         for (Route r : routes) {
-          timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(3), 
+         timeline.add( new Timeline(new KeyFrame(Duration.seconds(3), 
           new KeyValue(ball.layoutXProperty(), r.posx_end-ball.getRadius()),
-          new KeyValue(ball.layoutYProperty(), r.posy_end-ball.getRadius()))) ;
-          timeline.play();
-         ball.relocate( r.posx_end-ball.getRadius(), r.posy_end-ball.getRadius());
+          new KeyValue(ball.layoutYProperty(), r.posy_end-ball.getRadius()))) );
+          // ball.relocate( r.posx_end-ball.getRadius(), r.posy_end-ball.getRadius());
          
 
         }
-        ball.relocate( posx-ball.getRadius(), posy-ball.getRadius());
-    
-     timeline.playFromStart();
+       
+       SequentialTransition sequence = new SequentialTransition();
+       for (Timeline var : timeline) {
+         sequence.getChildren().add(var);
+       }
+       sequence.setCycleCount(Timeline.INDEFINITE);
+       sequence.setAutoReverse(true);
+       sequence.play();
+     
         
        
       }

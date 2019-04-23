@@ -3,6 +3,7 @@ package jtraffic;
 import com.sun.javafx.geom.Shape;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
@@ -18,13 +19,13 @@ public class Route extends Line{
   //Line line1 = new Line();
   //Line line2 = new Line();
     
-  public Route(double posx_begin , double posy_begin , double posx_end , double posy_end){
+  public Route(double posx_begin , double posy_begin , double posx_end , double posy_end, Color p , int taille){
     super(posx_begin +91,  posy_begin+65 ,posx_end +91 , posy_end+65 );
     this.posx_begin = posx_begin+91; 
     this.posy_begin = posy_begin+65;
-    setFill(Color.BLACK);
-    setStroke(Color.RED);
-    setStrokeWidth(10);
+    //setFill(Color.BLACK);
+    setStroke(p);
+    setStrokeWidth(taille);
     setStrokeType(StrokeType.CENTERED);
     setStrokeLineCap(StrokeLineCap.ROUND);
     setStrokeLineJoin(StrokeLineJoin.ROUND);

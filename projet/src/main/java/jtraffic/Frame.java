@@ -48,7 +48,7 @@ static final double H = 880;
         String javafxVersion = System.getProperty("javafx.version");
         Label l = new Label("JavaFX " + javafxVersion + ", Java " + javaVersion + ".");
 
-        Label title = new Label("DOUDY LA MECHANTE") ; 
+        Label title = new Label("DOUDY TRES MECHANTE") ; 
         title.setFont(Font.font ("Verdana",FontWeight.BOLD,20));
 
 
