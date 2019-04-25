@@ -20,8 +20,8 @@ public class Route extends Line{
   //Line line2 = new Line();
     
   public Route(double posx_begin , double posy_begin , double posx_end , double posy_end, Color p , int taille){
-    super(posx_begin +91,  posy_begin+65 ,posx_end +91 , posy_end+65 );
-    this.posx_begin = posx_begin+91; 
+    super(posx_begin +115,  posy_begin+65 ,posx_end +115 , posy_end+65 );
+    this.posx_begin = posx_begin+115; 
     this.posy_begin = posy_begin+65;
     //setFill(Color.BLACK);
     setStroke(p);
@@ -42,7 +42,7 @@ public class Route extends Line{
     
     */
 
-    this.posx_end = posx_end +91 ; 
+    this.posx_end = posx_end +115 ; 
     this.posy_end = posy_end + 65;
     
    /* line1.setStartX(posx_begin+91);
