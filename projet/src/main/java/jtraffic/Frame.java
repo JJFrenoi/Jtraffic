@@ -79,8 +79,8 @@ static final double H = 880;
         stage.show();
        
       
-        p.m.play(p.routes);
-        p.m2.play(p.departementales);
+      //  p.m.play(p.routes);
+        //p.m2.play(p.departementales);
       
      
     }
