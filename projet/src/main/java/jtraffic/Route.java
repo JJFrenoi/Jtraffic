@@ -1,7 +1,7 @@
 package jtraffic;
 
 import com.sun.javafx.geom.Shape;
-
+import java.lang.Math.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
@@ -16,20 +16,20 @@ public class Route extends Line{
   public double posy_begin  ; 
   public double posx_end  ; 
   public double posy_end  ;
-  //Line line1 = new Line();
-  //Line line2 = new Line();
+  public Color p ;
+  public int taille ; 
+  public int vitesse ; 
+  
     
-  public Route(double posx_begin , double posy_begin , double posx_end , double posy_end, Color p , int taille){
+  public Route(double posx_begin , double posy_begin , double posx_end , double posy_end  ){
     super(posx_begin +115,  posy_begin+65 ,posx_end +115 , posy_end+65 );
     this.posx_begin = posx_begin+115; 
     this.posy_begin = posy_begin+65;
     //setFill(Color.BLACK);
-    setStroke(p);
-    setStrokeWidth(taille);
     setStrokeType(StrokeType.CENTERED);
     setStrokeLineCap(StrokeLineCap.ROUND);
     setStrokeLineJoin(StrokeLineJoin.ROUND);
-   /*  setX(posx_begin+91);mvn compile exec:java -X
+   /*  setX(posx_begin+91);
 
     setY(posy_begin+65);
     setArcWidth(30.0); 
@@ -45,15 +45,12 @@ public class Route extends Line{
     this.posx_end = posx_end +115 ; 
     this.posy_end = posy_end + 65;
     
-   /* line1.setStartX(posx_begin+91);
-    line1.setStartY(posy_begin+65);
-    line1.setEndX(posx_end);
-    line1.setEndY(posy_end);
-    line2.setStartX(posx_begin+91);
-    line2.setStartY(posy_begin+65 +20);
-    line2.setEndX(posx_end);
-    line2.setEndY(posy_end);*/
-
+ 
 
    }    
+  public  double timeto( ){
+    double t = 0 ; 
+    t = Math.sqrt(Math.pow((posx_end-posx_begin),2) +  Math.pow((posy_end-posy_begin),2)      ) / vitesse;
+    return t ; 
+   }
 } 
