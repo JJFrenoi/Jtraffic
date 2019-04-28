@@ -20,9 +20,11 @@ public class Cities {
   public Node city = new ImageView(image);
   public Point p;
   public Circle perif = new Circle();
+  public Point p_route ; 
 
   public Cities(Point p) {
     this.p = p;
+    this.p_route = new Point(p.getX()+115, p.getY()+65 );
     perif.setCenterX(p.getX() + 45);
     perif.setCenterY(p.getY() + 65);
     perif.setRadius(70);

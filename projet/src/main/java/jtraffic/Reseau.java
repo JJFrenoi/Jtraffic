@@ -11,8 +11,6 @@ import javafx.scene.text.FontWeight;
 
 public class Reseau extends Pane {
     public Moto m, m2;
-    // public ArrayList<Integer> savedPosx = new ArrayList<>();
-    // public ArrayList<Integer> savedPosy = new ArrayList<>();
     public ArrayList<Point> savedPos = new ArrayList<>();
     public ArrayList<Double> excludeRowsx = new ArrayList<>();
     public ArrayList<Double> excludeRowsy = new ArrayList<>();
@@ -32,11 +30,12 @@ public class Reseau extends Pane {
         setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;" + "-fx-border-width: 2;"
                 + "-fx-border-insets: 5;" + "-fx-border-radius: 5;" + "-fx-border-color: blue;");
         createCity();
-        // m = new Moto("Jenaj", routes.get(0).posx_begin, routes.get(0).posy_begin);
+        m = new Moto("Jenaj", cities.get(0).p_route);
+        m.setPath( pathto(m , cities.get(3))   );
         // m2 = new Moto("Jenaj", departementales.get(5).posx_begin,
         // departementales.get(5).posy_end);
 
-        // getChildren().add(m);
+         getChildren().add(m);
         // getChildren().add(m2);
 
     }
@@ -72,6 +71,7 @@ public class Reseau extends Pane {
 
         for (National var : nationales) {
             if (!toremove.contains(nationales.indexOf(var))) {
+                routes.add(var);
                 getChildren().add(var);
                 txt = new Label("N" + nationales.indexOf(var));
                 txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 13));
@@ -82,6 +82,7 @@ public class Reseau extends Pane {
         }
         for (Departemental var : departementales) {
             if (!toremoved.contains(departementales.indexOf(var))) {
+                routes.add(var);
                 getChildren().add(var);
                 txt = new Label("D" + departementales.indexOf(var));
                 txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 9));
@@ -91,6 +92,7 @@ public class Reseau extends Pane {
             }
         }
         for (Autoroute var : autoroutes) {
+            routes.add(var);
             getChildren().add(var);
             txt = new Label("A" + autoroutes.indexOf(var));
             txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
@@ -157,13 +159,13 @@ public class Reseau extends Pane {
                 switch (cD) {
                 case 0:
                     r = new Autoroute(var.p, savedPos.get(cA));
-                    routes.add(r);
+                    
                     autoroutes.add((Autoroute) r);
                     break;
                 case 1:
                 case 2:
                     r = new National(var.p, savedPos.get(cA));
-                    routes.add(r);
+                   
                     nationales.add((National) r);
                     break;
                 case 3:
@@ -171,13 +173,13 @@ public class Reseau extends Pane {
                 case 5:
                 case 6:
                     r = new Departemental(var.p, savedPos.get(cA));
-                    routes.add(r);
+                    
                     departementales.add((Departemental) r);
 
                     break;
                 default:
                     r = new Departemental(var.p, savedPos.get(cA));
-                    routes.add(r);
+                    
                     departementales.add((Departemental) r);
                 }
 
@@ -218,7 +220,7 @@ public class Reseau extends Pane {
             for (Departemental x : departementales) {
                 if (var.p_begin.equals(x.p_end) && var.p_end.equals(x.p_begin)) {
                     // System.out.println(departementales.indexOf(x));
-                    toremoved.add(departementales.indexOf(x));
+                    toremove.add(nationales.indexOf(var));
 
                 }
             }
@@ -291,11 +293,43 @@ public class Reseau extends Pane {
 
         for (Autoroute a : autoroutes) {
             for (National n : nationales) {
-                if (a.intersects(n.getBoundsInLocal())) {
+                if (a.intersects(n.getBoundsInLocal())  &&  !n.p_begin.equals(a.p_end) &&  n.p_end.equals(a.p_end)  ) {
                     System.out.println("Yes");
+                    
                 }
 
             }
         }
+    
     }
+
+
+
+
+
+         public ArrayList<Route> pathto( Moto m ,  Cities c ){
+             ArrayList<Route> path = new ArrayList<>();
+             for (int i = 0 ; i<routes.size() ; i++ ) {
+                 if( m.depart.equals(routes.get(i).p_begin)&& routes.get(i).p_end.equals(c.p_route)    ){
+                     path.add(routes.get(i) ); 
+                     return path ; 
+               
+             }else if(m.depart.equals(routes.get(i).p_begin)  ){
+                 path.add(routes.get(i)); 
+                 i=0 ; 
+             }else if (routes.get(i).p_end.equals(c.p_route) && routes.get(i).p_begin.equals(path.get(path.size()-1).p_end)     ){
+                path.add(routes.get(i) ); 
+                return path ;
+             }else if(   routes.get(i).p_begin.equals(path.get(path.size()-1).p_end) ){
+                 path.add(routes.get(i));
+                 i=0;
+             }else{
+                 System.out.println("peut pas");
+                 i=0;
+             }
+               
+         }
+         return path ; 
+        } 
+
 }
