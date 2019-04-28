@@ -12,20 +12,19 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
 
-public class Cities  {
+public class Cities {
 
   public ClassLoader classLoader = getClass().getClassLoader();
   public String imageUrl = classLoader.getResource("img/city.png").toExternalForm();
-  public Image image = new Image(imageUrl); 
+  public Image image = new Image(imageUrl);
   public Node city = new ImageView(image);
-  public int posx = 0 , posy = 0 ; 
+  public Point p;
   public Circle perif = new Circle();
-  
-  public Cities(int posx , int posy ) {
-    this.posx = posx ; 
-    this.posy = posy ;
-    perif.setCenterX(posx+45);
-    perif.setCenterY(posy+65);
+
+  public Cities(Point p) {
+    this.p = p;
+    perif.setCenterX(p.getX() + 45);
+    perif.setCenterY(p.getY() + 65);
     perif.setRadius(70);
     perif.setFill(Color.TRANSPARENT);
     perif.setStroke(Color.BLUEVIOLET);
@@ -34,10 +33,7 @@ public class Cities  {
     perif.setStrokeLineCap(StrokeLineCap.ROUND);
     perif.setStrokeLineJoin(StrokeLineJoin.ROUND);
 
-    
-       
-    this.city.relocate(posx, posy); 
+    this.city.relocate(p.getX(), p.getY());
   }
-  
-  
+
 }
