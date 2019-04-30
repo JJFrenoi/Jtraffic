@@ -37,7 +37,8 @@ public class Reseau extends Pane {
         findX();
 
         printRoute();
-        printIndexCity();
+        // printIndexCity();
+        printIntersection();
 
         // m = new Moto("Jenaj", cities.get(0).p_route);
         // m.setPath( pathto(m , cities.get(3)) );
@@ -196,7 +197,7 @@ public class Reseau extends Pane {
                 if (var != x && var.p_begin.equals(x.p_end) && var.p_end.equals(x.p_begin)) {
                     // System.out.println(departementales.indexOf(x));
                     toremoved.add(departementales.indexOf(x));
-                    routes.add(var);
+
                 }
             }
         }
@@ -230,16 +231,15 @@ public class Reseau extends Pane {
 
         for (Route a : routes) {
             for (Route n : routes) {
-                if (a.intersects(n.getBoundsInLocal()) && !n.p_begin.equals(a.p_end) && n.p_end.equals(a.p_end)
-                        && !a.equals(n)) {
-                    Point p = calculIntersection(a.p_begin, a.p_end, n.p_begin, n.p_end);
-                    if (verifIntersectExist(a.p_begin, a.p_end, n.p_begin, n.p_end, p)) {
-                        intersections.add(p);
 
-                    }
+                Point p = calculIntersection(a.p_begin, a.p_end, n.p_begin, n.p_end);
+                if (verifIntersectExist(a.p_begin, a.p_end, n.p_begin, n.p_end, p) && !a.equals(n) ) {
+                    intersections.add(p);
+                    System.out.println("intersections");
+
                 }
-
             }
+
         }
 
     }
@@ -339,6 +339,7 @@ public class Reseau extends Pane {
                 Point2D mid = var.p_begin.midpoint(var.p_end);
                 txt.relocate(mid.getX(), mid.getY());
                 getChildren().add(txt);
+
             }
         }
         for (Departemental var : departementales) {
@@ -350,51 +351,95 @@ public class Reseau extends Pane {
                 Point2D mid = var.p_begin.midpoint(var.p_end);
                 txt.relocate(mid.getX(), mid.getY());
                 getChildren().add(txt);
+
             }
         }
         for (Autoroute var : autoroutes) {
 
             getChildren().add(var);
-            txt = new Label("A" + (autoroutes.indexOf(var)  +1)  );
+            txt = new Label("A" + (autoroutes.indexOf(var) + 1));
             txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
             Point2D mid = var.p_begin.midpoint(var.p_end);
             txt.relocate(mid.getX(), mid.getY());
             getChildren().add(txt);
+
         }
 
-        
     }
 
-   void printRoute2(){
-       for (Route var : routes ) {
-           getChildren().add(var);
-           if(var instanceof Departemental){
-            txt = new Label("D" + departementales.indexOf(var));
-            txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 9));
-            Point2D mid = var.p_begin.midpoint(var.p_end);
-            txt.relocate(mid.getX(), mid.getY());
-            getChildren().add(txt);
-           }else if(var instanceof National){
-            txt = new Label("N" + nationales.indexOf(var));
-            txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 13));
-            Point2D mid = var.p_begin.midpoint(var.p_end);
-            txt.relocate(mid.getX(), mid.getY());
-            getChildren().add(txt); 
-           }else if ( var instanceof Autoroute){
-            txt = new Label("A" + autoroutes.indexOf(var));
-            txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
-            Point2D mid = var.p_begin.midpoint(var.p_end);
-            txt.relocate(mid.getX(), mid.getY());
-            getChildren().add(txt); 
-           }
-       }
-   }
-   void printIndexCity(){
-    for (Cities var : cities) {
-        txt = new Label("" + cities.indexOf(var));
-        txt.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-        txt.relocate(var.p.getX() + 45, var.p.getY() + 65);
-        getChildren().add(txt);
+    void printRoute2() {
+        for (Route var : routes) {
+            getChildren().add(var);
+            if (var instanceof Departemental && !toremoved.contains(departementales.indexOf(var))) {
+                txt = new Label("D" + departementales.indexOf(var));
+                txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 9));
+                Point2D mid = var.p_begin.midpoint(var.p_end);
+                txt.relocate(mid.getX(), mid.getY());
+                getChildren().add(txt);
+            } else if (var instanceof National && !toremoved.contains(nationales.indexOf(var))) {
+                txt = new Label("N" + nationales.indexOf(var));
+                txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 13));
+                Point2D mid = var.p_begin.midpoint(var.p_end);
+                txt.relocate(mid.getX(), mid.getY());
+                getChildren().add(txt);
+            } else if (var instanceof Autoroute) {
+                txt = new Label("A" + autoroutes.indexOf(var));
+                txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
+                Point2D mid = var.p_begin.midpoint(var.p_end);
+                txt.relocate(mid.getX(), mid.getY());
+                getChildren().add(txt);
+            }
+
+        }
     }
-   }
+
+    public void printIndexCity() {
+        for (Cities var : cities) {
+            txt = new Label("" + cities.indexOf(var));
+            txt.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+            txt.relocate(var.p.getX() + 45, var.p.getY() + 65);
+            getChildren().add(txt);
+        }
+    }
+
+    public void printIntersection() {
+        for (Point var : intersections) {
+            getChildren().add(var.r);
+        }
+    }
+    public Route randomRoute(Point a , Point b ){
+
+        int cD = rand.nextInt(6);
+
+        Route r ;
+        switch (cD) {
+        case 0:
+            r = new Autoroute(a, b);
+
+            autoroutes.add((Autoroute) r);
+            break;
+        case 1:
+        case 2:
+            r = new National(a, b);
+     
+            nationales.add((National) r);
+            
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            r = new Departemental(a, b);
+
+            departementales.add((Departemental) r);
+
+            break;
+        default:
+            r = new Departemental(a, b);
+
+            departementales.add((Departemental) r);
+        }
+        return r ; 
+    }
+
 }
