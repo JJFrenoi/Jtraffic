@@ -46,7 +46,7 @@ public class Moto extends Circle {
     for (Route r : path) {
 
       timeline.add(new Timeline(
-          new KeyFrame(Duration.seconds(r.timeto()), new KeyValue(layoutXProperty(), r.p_end.getX() - getRadius()),
+          new KeyFrame(Duration.seconds(3), new KeyValue(layoutXProperty(), r.p_end.getX() - getRadius()),
               new KeyValue(layoutYProperty(), r.p_end.getY() - getRadius()))));
       // ball.relocate( r.posx_end-ball.getRadius(), r.posy_end-ball.getRadius());
 
@@ -56,7 +56,7 @@ public class Moto extends Circle {
     for (Timeline var : timeline) {
       sequence.getChildren().add(var);
     }
-    //sequence.setCycleCount(Timeline.INDEFINITE);
+   // sequence.setCycleCount(Timeline.INDEFINITE);
    // sequence.setAutoReverse(true);
     sequence.play();
 
