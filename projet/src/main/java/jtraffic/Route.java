@@ -24,12 +24,12 @@ public class Route extends Line {
   public double b = 0;
 
   public Route(Point b, Point e) {
-    super(b.getX() + 115, b.getY() + 65, e.getX() + 115, e.getY() + 65);
-    this.p_begin = new Point(b.getX() + 115, b.getY() + 65);
+    super(b.getX(), b.getY() , e.getX(), e.getY() );
+    this.p_begin = new Point(b.getX(), b.getY() );
     setStrokeType(StrokeType.CENTERED);
     setStrokeLineCap(StrokeLineCap.ROUND);
     setStrokeLineJoin(StrokeLineJoin.ROUND);
-    this.p_end = new Point(e.getX() + 115, e.getY() + 65);
+    this.p_end = new Point(e.getX(), e.getY());
     setAffine();
 
   }
