@@ -38,17 +38,17 @@ public class Reseau extends Pane {
         fillMapRoute();
         compareRoute();
         findX();
-        doubleSens();
+
         printRoute();
         printIndexCity();
         printIntersection();
 
-        // m = new Moto("Jenaj", cities.get(0).p_route);
-        // m.setPath(pathto(m, cities.get(4)));
+        m = new Moto("Jenaj", cities.get(0).p_route);
+        m.setPath(pathto(m, cities.get(4)));
         // m2 = new Moto("Jenaj", departementales.get(5).posx_begin,
         // departementales.get(5).posy_end);
 
-        // getChildren().add(m);
+        getChildren().add(m);
         // getChildren().add(m2);
 
     }
@@ -118,7 +118,7 @@ public class Reseau extends Pane {
     public void fillMapRoute() {
         int cD = 0, cA = 0;
         ArrayList<Integer> ban = new ArrayList<>();
-        Route r;
+        Route r, r2;
         for (Cities var : cities) {
             for (int i = 0; i < 3; i++) {
                 cD = rand.nextInt(6);
@@ -129,28 +129,31 @@ public class Reseau extends Pane {
                 switch (cD) {
                 case 0:
                     r = new Autoroute(var.p_route, savedPos.get(cA));
-
+                    r2 = new Autoroute(savedPos.get(cA), var.p_route);
                     autoroutes.add((Autoroute) r);
+                    autoroutes.add((Autoroute) r2);
                     break;
                 case 1:
                 case 2:
                     r = new National(var.p_route, savedPos.get(cA));
-
+                    r2 = new National(savedPos.get(cA), var.p_route);
                     nationales.add((National) r);
+                    nationales.add((National) r2);
                     break;
                 case 3:
                 case 4:
                 case 5:
                 case 6:
                     r = new Departemental(var.p_route, savedPos.get(cA));
-
+                    r2 = new Departemental(savedPos.get(cA), var.p_route);
                     departementales.add((Departemental) r);
-
+                    departementales.add((Departemental) r2);
                     break;
                 default:
                     r = new Departemental(var.p_route, savedPos.get(cA));
-
+                    r2 = new Departemental(savedPos.get(cA), var.p_route);
                     departementales.add((Departemental) r);
+                    departementales.add((Departemental) r2);
                 }
 
                 ban.add(cA);
@@ -179,13 +182,14 @@ public class Reseau extends Pane {
                     toremoveD.add(departementales.indexOf(x));
 
                 }
-            }
-            for (Autoroute v : autoroutes) {
-                if (var.p_begin.equals(v.p_end) && var.p_end.equals(v.p_begin)) {
-                    // System.out.println(nationales.indexOf(v));
-                    toremoveA.add(autoroutes.indexOf(v));
-                }
-            }
+            } /*
+               * int i = 0 ; for (Autoroute v : autoroutes) { if (var.p_begin.equals(v.p_end)
+               * && var.p_end.equals(v.p_begin)) { //
+               * System.out.println(nationales.indexOf(v)); i++; if (i>2) {
+               * toremoveA.add(autoroutes.indexOf(v)); }
+               * 
+               * } }
+               */
 
         }
 
@@ -198,26 +202,27 @@ public class Reseau extends Pane {
                 }
             }
         }
-        for (Departemental var : departementales) {
-            for (Departemental x : departementales) {
-                if (!var.equals(x) && var.p_begin.equals(x.p_end) && var.p_end.equals(x.p_begin)) {
-                    // System.out.println(departementales.indexOf(x));
-                    toremoveD.add(departementales.indexOf(x));
-
-                }
-            }
-        }
-        for (National var : nationales) {
-            for (National x : nationales) {
-                if (!var.equals(x) && var.p_begin.equals(x.p_end) && var.p_end.equals(x.p_begin)) {
-                    // System.out.println(departementales.indexOf(x));
-                    toremoveN.add(nationales.indexOf(x));
-
-                }
-            }
-        }
+        /*
+         * int j = 0 ; for (Departemental var : departementales) { for (Departemental x
+         * : departementales) { if (!var.equals(x) && var.p_begin.equals(x.p_end) &&
+         * var.p_end.equals(x.p_begin)) { j++; if (j>2) {
+         * toremoveD.add(departementales.indexOf(x)); } //
+         * System.out.println(departementales.indexOf(x));
+         * 
+         * 
+         * } } }
+         *//*
+            * int k = 0 ; for (National var : nationales) { for (National x : nationales) {
+            * if (!var.equals(x) && var.p_begin.equals(x.p_end) &&
+            * var.p_end.equals(x.p_begin)) { k++; if (k>2) {
+            * toremoveN.add(nationales.indexOf(x)); } //
+            * System.out.println(departementales.indexOf(x));
+            * toremoveN.add(nationales.indexOf(x));
+            * 
+            * } } }
+            */
         fillRoute();
-       
+
     }
 
     public void findX() {
@@ -282,7 +287,7 @@ public class Reseau extends Pane {
                     }
 
                 }
-                bol = false;
+                //bol = false;
                 for (Route var : routes) {
                     if (var.p_begin.equals(path.get(path.size() - 1).p_end) && bol == false) {
                         bol = true;
@@ -359,11 +364,14 @@ public class Reseau extends Pane {
         for (Autoroute var : autoroutes) {
             if (!toremoveA.contains(autoroutes.indexOf(var))) {
                 getChildren().add(var);
-                txt = new Label("A" + (autoroutes.indexOf(var) + 1));
-                txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
-                Point2D mid = var.p_begin.midpoint(var.p_end);
-                txt.relocate(mid.getX(), mid.getY());
-                getChildren().add(txt);
+                if (autoroutes.indexOf(var) % 2 != 0) {
+                    txt = new Label("A" + autoroutes.indexOf(var));
+                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
+                    Point2D mid = var.p_begin.midpoint(var.p_end);
+                    txt.relocate(mid.getX(), mid.getY());
+                    getChildren().add(txt);
+                }
+
             }
 
         }
@@ -371,11 +379,13 @@ public class Reseau extends Pane {
             if (!toremoveN.contains(nationales.indexOf(var))) {
 
                 getChildren().add(var);
-                txt = new Label("N" + nationales.indexOf(var));
-                txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 13));
-                Point2D mid = var.p_begin.midpoint(var.p_end);
-                txt.relocate(mid.getX(), mid.getY());
-                getChildren().add(txt);
+                if (nationales.indexOf(var) % 2 != 0) {
+                    txt = new Label("N" + nationales.indexOf(var));
+                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 13));
+                    Point2D mid = var.p_begin.midpoint(var.p_end);
+                    txt.relocate(mid.getX(), mid.getY());
+                    getChildren().add(txt);
+                }
 
             }
         }
@@ -383,15 +393,16 @@ public class Reseau extends Pane {
             if (!toremoveD.contains(departementales.indexOf(var))) {
 
                 getChildren().add(var);
-                txt = new Label("D" + departementales.indexOf(var));
-                txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 9));
-                Point2D mid = var.p_begin.midpoint(var.p_end);
-                txt.relocate(mid.getX(), mid.getY());
-                getChildren().add(txt);
+                if (departementales.indexOf(var) % 2 != 0) {
+                    txt = new Label("D" + departementales.indexOf(var));
+                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 9));
+                    Point2D mid = var.p_begin.midpoint(var.p_end);
+                    txt.relocate(mid.getX(), mid.getY());
+                    getChildren().add(txt);
+                }
 
             }
         }
-      
 
     }
 
@@ -399,36 +410,35 @@ public class Reseau extends Pane {
         for (Route var : routes) {
             if (!toremoveAfterIntersec.contains(routes.indexOf(var))) {
                 getChildren().add(var);
-                     if (var instanceof Departemental) {
+                if (var instanceof Departemental) {
 
-                        txt = new Label("D" + departementales.indexOf(var));
-                        txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 9));
-                        Point2D mid = var.p_begin.midpoint(var.p_end);
-                        txt.relocate(mid.getX(), mid.getY());
-                        getChildren().add(txt);
-                    } else if (var instanceof National) {
+                    txt = new Label("D" + departementales.indexOf(var));
+                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 9));
+                    Point2D mid = var.p_begin.midpoint(var.p_end);
+                    txt.relocate(mid.getX(), mid.getY());
+                    getChildren().add(txt);
+                } else if (var instanceof National) {
 
-                        txt = new Label("N" + nationales.indexOf(var));
-                        txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 13));
-                        Point2D mid = var.p_begin.midpoint(var.p_end);
-                        txt.relocate(mid.getX(), mid.getY());
-                        getChildren().add(txt);
-                    } else if (var instanceof Autoroute) {
+                    txt = new Label("N" + nationales.indexOf(var));
+                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 13));
+                    Point2D mid = var.p_begin.midpoint(var.p_end);
+                    txt.relocate(mid.getX(), mid.getY());
+                    getChildren().add(txt);
+                } else if (var instanceof Autoroute) {
 
-                        txt = new Label("A" + autoroutes.indexOf(var));
-                        txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
-                        Point2D mid = var.p_begin.midpoint(var.p_end);
-                        txt.relocate(mid.getX(), mid.getY());
-                        getChildren().add(txt);
-                    }
-
+                    txt = new Label("A" + autoroutes.indexOf(var));
+                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
+                    Point2D mid = var.p_begin.midpoint(var.p_end);
+                    txt.relocate(mid.getX(), mid.getY());
+                    getChildren().add(txt);
                 }
-            }
-            /*
-             * for (Route r : routesAfterIntersec) { getChildren().add(r); }
-             */
 
-        
+            }
+        }
+        /*
+         * for (Route r : routesAfterIntersec) { getChildren().add(r); }
+         */
+
     }
 
     public void printIndexCity() {
@@ -514,15 +524,5 @@ public class Reseau extends Pane {
             }
         }
     }
-   public void doubleSens(){
-  // Point p1 , p2 ; 
-    for (Route var : autoroutes) {
-        if (!toremoveA.contains(autoroutes.indexOf(var))) {
-           
-          departementales.add(new Departemental(var.p_end, var.p_begin));
-
-        }
-    }
-   }
 
 }

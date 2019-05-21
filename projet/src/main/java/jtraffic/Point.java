@@ -6,7 +6,7 @@ import javafx.scene.shape.Circle;
 
 public class Point extends Point2D {
 
-    Circle r = new Circle(10,Color.YELLOW); 
+    Circle r = new Circle(4,Color.YELLOW); 
     public Point(double x, double y) {
         super(x, y);
         r.relocate(x, y);
