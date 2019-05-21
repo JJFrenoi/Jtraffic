@@ -74,7 +74,7 @@ public class Frame extends Application {
     stage.setScene(scene);
     stage.show();
 
-     p.m.play();
+   //  p.m.play();
     // p.m2.play(p.departementales);
 
   }

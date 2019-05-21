@@ -38,17 +38,17 @@ public class Reseau extends Pane {
         fillMapRoute();
         compareRoute();
         findX();
-
-        printRoute2();
+        doubleSens();
+        printRoute();
         printIndexCity();
         printIntersection();
 
-        m = new Moto("Jenaj", cities.get(0).p_route);
-        m.setPath(pathto(m, cities.get(4)));
+        // m = new Moto("Jenaj", cities.get(0).p_route);
+        // m.setPath(pathto(m, cities.get(4)));
         // m2 = new Moto("Jenaj", departementales.get(5).posx_begin,
         // departementales.get(5).posy_end);
 
-        getChildren().add(m);
+        // getChildren().add(m);
         // getChildren().add(m2);
 
     }
@@ -172,7 +172,7 @@ public class Reseau extends Pane {
                 }
 
             }
-          
+
             for (Departemental x : departementales) {
                 if (var.p_begin.equals(x.p_end) && x.p_end.equals(var.p_begin)) {
                     // System.out.println(departementales.indexOf(x));
@@ -216,8 +216,8 @@ public class Reseau extends Pane {
                 }
             }
         }
-        // routes.clear();
         fillRoute();
+       
     }
 
     public void findX() {
@@ -255,46 +255,47 @@ public class Reseau extends Pane {
     public ArrayList<Route> pathto(Moto m, Cities c) {
         ArrayList<Route> path = new ArrayList<>();
         Boolean bol = false;
-       for (Route var : routes ) {
-           if(m.depart.equals(var.p_begin) && c.p_route.equals(var.p_end) && bol == false )
-            {
+        for (Route var : routes) {
+            if (m.depart.equals(var.p_begin) && c.p_route.equals(var.p_end) && bol == false) {
                 path.add(var);
-                bol = true ; 
+                bol = true;
             }
-            
-       }
-        
-       for (Route var : routes) {
-         if ( m.depart.equals(var.p_begin) && bol == false  ){
-            path.add(var);
-            bol = true ; 
+
         }
-       }
-       try {
-        while(!path.get(path.size()-1).p_end.equals(c.p_route) )
-          {
-            bol = false;
-             for (Route var : routes) {
-                 if (var.p_begin.equals(path.get(path.size()-1).p_end) && var.p_end.equals(c.p_route) && bol == false  ) {
-                     bol = true ;
-                     path.add(var); 
-                                         
-                 }
-                 else if (var.p_begin.equals(path.get(path.size()-1).p_end)  && bol == false  ){
-                    bol = true ; 
-                    path.add(var);
+
+        for (Route var : routes) {
+            if (m.depart.equals(var.p_begin) && bol == false) {
+                path.add(var);
+                bol = true;
+            }
+        }
+        try {
+            while (!path.get(path.size() - 1).p_end.equals(c.p_route)) {
+                bol = false;
+                for (Route var : routes) {
+                    if (var.p_begin.equals(path.get(path.size() - 1).p_end) && var.p_end.equals(c.p_route)
+                            && bol == false) {
+                        bol = true;
+                        path.add(var);
+                        System.out.println("il y a de route qui va a 4");
+
+                    }
+
                 }
+                bol = false;
+                for (Route var : routes) {
+                    if (var.p_begin.equals(path.get(path.size() - 1).p_end) && bol == false) {
+                        bol = true;
+                        path.add(var);
+                        System.out.println("j'ai trouive une route qui va a une ville ");
+                    }
                 }
-                 
-        
-                
-            
-             
-          }
-       } catch (Exception e) {
-          System.out.println("marche powa : " +e);
-       }
-       
+
+            }
+        } catch (Exception e) {
+            System.out.println("marche powa : " + e);
+        }
+
         return path;
     }
 
@@ -355,7 +356,17 @@ public class Reseau extends Pane {
     }
 
     void printRoute() {
+        for (Autoroute var : autoroutes) {
+            if (!toremoveA.contains(autoroutes.indexOf(var))) {
+                getChildren().add(var);
+                txt = new Label("A" + (autoroutes.indexOf(var) + 1));
+                txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
+                Point2D mid = var.p_begin.midpoint(var.p_end);
+                txt.relocate(mid.getX(), mid.getY());
+                getChildren().add(txt);
+            }
 
+        }
         for (National var : nationales) {
             if (!toremoveN.contains(nationales.indexOf(var))) {
 
@@ -380,17 +391,7 @@ public class Reseau extends Pane {
 
             }
         }
-        for (Autoroute var : autoroutes) {
-            if (!toremoveA.contains(autoroutes.indexOf(var))) {
-                getChildren().add(var);
-                txt = new Label("A" + (autoroutes.indexOf(var) + 1));
-                txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
-                Point2D mid = var.p_begin.midpoint(var.p_end);
-                txt.relocate(mid.getX(), mid.getY());
-                getChildren().add(txt);
-            }
-
-        }
+      
 
     }
 
@@ -398,35 +399,36 @@ public class Reseau extends Pane {
         for (Route var : routes) {
             if (!toremoveAfterIntersec.contains(routes.indexOf(var))) {
                 getChildren().add(var);
-                if (var instanceof Departemental) {
+                     if (var instanceof Departemental) {
 
-                    txt = new Label("D" + departementales.indexOf(var));
-                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 9));
-                    Point2D mid = var.p_begin.midpoint(var.p_end);
-                    txt.relocate(mid.getX(), mid.getY());
-                    getChildren().add(txt);
-                } else if (var instanceof National) {
+                        txt = new Label("D" + departementales.indexOf(var));
+                        txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 9));
+                        Point2D mid = var.p_begin.midpoint(var.p_end);
+                        txt.relocate(mid.getX(), mid.getY());
+                        getChildren().add(txt);
+                    } else if (var instanceof National) {
 
-                    txt = new Label("N" + nationales.indexOf(var));
-                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 13));
-                    Point2D mid = var.p_begin.midpoint(var.p_end);
-                    txt.relocate(mid.getX(), mid.getY());
-                    getChildren().add(txt);
-                } else if (var instanceof Autoroute) {
+                        txt = new Label("N" + nationales.indexOf(var));
+                        txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 13));
+                        Point2D mid = var.p_begin.midpoint(var.p_end);
+                        txt.relocate(mid.getX(), mid.getY());
+                        getChildren().add(txt);
+                    } else if (var instanceof Autoroute) {
 
-                    txt = new Label("A" + autoroutes.indexOf(var));
-                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
-                    Point2D mid = var.p_begin.midpoint(var.p_end);
-                    txt.relocate(mid.getX(), mid.getY());
-                    getChildren().add(txt);
+                        txt = new Label("A" + autoroutes.indexOf(var));
+                        txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
+                        Point2D mid = var.p_begin.midpoint(var.p_end);
+                        txt.relocate(mid.getX(), mid.getY());
+                        getChildren().add(txt);
+                    }
+
                 }
-
             }
-        }
-        /*
-         * for (Route r : routesAfterIntersec) { getChildren().add(r); }
-         */
+            /*
+             * for (Route r : routesAfterIntersec) { getChildren().add(r); }
+             */
 
+        
     }
 
     public void printIndexCity() {
@@ -512,5 +514,15 @@ public class Reseau extends Pane {
             }
         }
     }
+   public void doubleSens(){
+  // Point p1 , p2 ; 
+    for (Route var : autoroutes) {
+        if (!toremoveA.contains(autoroutes.indexOf(var))) {
+           
+          departementales.add(new Departemental(var.p_end, var.p_begin));
+
+        }
+    }
+   }
 
 }
