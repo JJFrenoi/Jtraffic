@@ -25,7 +25,7 @@ public class Reseau extends Pane {
     public ArrayList<Integer> toremoveN = new ArrayList<>();
     public ArrayList<Integer> toremoveD = new ArrayList<>();
     public ArrayList<Integer> toremoveA = new ArrayList<>();
-    public ArrayList<Integer> toremoveAfterIntersec = new ArrayList<>();
+    public ArrayList<Route> toremoveAfterIntersec = new ArrayList<>();
     Random rand = new Random();
     public Label txt;
     public Point p;
@@ -37,7 +37,6 @@ public class Reseau extends Pane {
 
         fillMapRoute();
         compareRoute();
-        //findX();
 
         printRoute();
         printIndexCity();
@@ -176,6 +175,10 @@ public class Reseau extends Pane {
                     // System.out.println(nationales.indexOf(v));
                     toremoveN.add(nationales.indexOf(v));
                 }
+                Point p = calculIntersection(var.p_begin, var.p_end, v.p_begin, v.p_end);
+                if (verifIntersectExist(var.p_begin, var.p_end, v.p_begin, v.p_end, p) && !var.equals(v)) {
+                    intersections.add(p);
+                }
 
             }
 
@@ -185,14 +188,20 @@ public class Reseau extends Pane {
                     toremoveD.add(departementales.indexOf(x));
 
                 }
-            } /*
-               * int i = 0 ; for (Autoroute v : autoroutes) { if (var.p_begin.equals(v.p_end)
-               * && var.p_end.equals(v.p_begin)) { //
-               * System.out.println(nationales.indexOf(v)); i++; if (i>2) {
-               * toremoveA.add(autoroutes.indexOf(v)); }
-               * 
-               * } }
-               */
+                Point p = calculIntersection(var.p_begin, var.p_end, x.p_begin, x.p_end);
+                if (verifIntersectExist(var.p_begin, var.p_end, x.p_begin, x.p_end, p) && !var.equals(x)) {
+                    intersections.add(p);
+                }
+            }
+
+            for (Autoroute v : autoroutes) {
+                ;
+                // toremoveA.add(autoroutes.indexOf(v)); }
+                Point p = calculIntersection(var.p_begin, var.p_end, v.p_begin, v.p_end);
+                if (verifIntersectExist(var.p_begin, var.p_end, v.p_begin, v.p_end, p) && !var.equals(v)) {
+                    intersections.add(p);
+                }
+            }
 
         }
 
@@ -203,59 +212,39 @@ public class Reseau extends Pane {
                     toremoveN.add(nationales.indexOf(var));
 
                 }
-            }
-        }
-        /*
-         * int j = 0 ; for (Departemental var : departementales) { for (Departemental x
-         * : departementales) { if (!var.equals(x) && var.p_begin.equals(x.p_end) &&
-         * var.p_end.equals(x.p_begin)) { j++; if (j>2) {
-         * toremoveD.add(departementales.indexOf(x)); } //
-         * System.out.println(departementales.indexOf(x));
-         * 
-         * 
-         * } } }
-         *//*
-            * int k = 0 ; for (National var : nationales) { for (National x : nationales) {
-            * if (!var.equals(x) && var.p_begin.equals(x.p_end) &&
-            * var.p_end.equals(x.p_begin)) { k++; if (k>2) {
-            * toremoveN.add(nationales.indexOf(x)); } //
-            * System.out.println(departementales.indexOf(x));
-            * toremoveN.add(nationales.indexOf(x));
-            * 
-            * } } }
-            */
-        fillRoute();
-
-    }
-
-    public void findX() {
-        
-        for (Route a : routes) {
-            for (Route n : routes) {
-
-                Point p = calculIntersection(a.p_begin, a.p_end, n.p_begin, n.p_end);
-                if (verifIntersectExist(a.p_begin, a.p_end, n.p_begin, n.p_end, p) && !a.equals(n)) {
+                Point p = calculIntersection(var.p_begin, var.p_end, x.p_begin, x.p_end);
+                if (verifIntersectExist(var.p_begin, var.p_end, x.p_begin, x.p_end, p) && !var.equals(x)) {
                     intersections.add(p);
-
-                    randomRoute(a.p_begin, p);
-                    randomRoute(n.p_begin, p);
-                    randomRoute(p, a.p_end);
-                    randomRoute(p, n.p_end); 
-
-
-
+                }
             }
         }
-    }
-}
 
-    // compareRoute();
-
+        for (Departemental var : departementales) {
+            for (Departemental x : departementales) {
+                Point p = calculIntersection(var.p_begin, var.p_end, x.p_begin, x.p_end);
+                if (verifIntersectExist(var.p_begin, var.p_end, x.p_begin, x.p_end, p) && !var.equals(x)) {
+                       intersections.add(p);
+               }
+            }
+        }
     
+        for (National var : nationales) {
+            for (National x : nationales) {
+                Point p = calculIntersection(var.p_begin, var.p_end, x.p_begin, x.p_end);
+                if (verifIntersectExist(var.p_begin, var.p_end, x.p_begin, x.p_end, p) && !var.equals(x)) {
+                       intersections.add(p);
+               }
+        }
+    }
+
+    fillRoute();
+
+    }
 
     public ArrayList<Route> pathto(Vehicule m, Cities c) {
         ArrayList<Route> path = new ArrayList<>();
         Boolean bol = false;
+        int nbCity = 0;
         for (Route var : routes) {
             if (m.depart.equals(var.p_begin) && c.p_route.equals(var.p_end) && bol == false) {
                 path.add(var);
@@ -272,7 +261,7 @@ public class Reseau extends Pane {
         }
         System.out.println(path.size());
         try {
-            while (!path.get(path.size() - 1).p_end.equals(c.p_route)) {
+            while (!path.get(path.size() - 1).p_end.equals(c.p_route) || nbCity == 6 ) {
                 bol = false;
                 for (Route var : routes) {
                     if (var.p_begin.equals(path.get(path.size() - 1).p_end) && var.p_end.equals(c.p_route)
@@ -293,6 +282,7 @@ public class Reseau extends Pane {
 
                     }
                 }
+                nbCity ++ ;
 
             }
         } catch (Exception e) {
@@ -360,7 +350,7 @@ public class Reseau extends Pane {
 
     void printRoute() {
         for (Autoroute var : autoroutes) {
-            if (!toremoveA.contains(autoroutes.indexOf(var))) {
+            if (!toremoveA.contains(autoroutes.indexOf(var)) && !toremoveAfterIntersec.contains(var)) {
                 getChildren().add(var);
                 if (autoroutes.indexOf(var) % 2 != 0) {
                     txt = new Label("A" + autoroutes.indexOf(var));
@@ -374,7 +364,7 @@ public class Reseau extends Pane {
 
         }
         for (National var : nationales) {
-            if (!toremoveN.contains(nationales.indexOf(var))) {
+            if (!toremoveN.contains(nationales.indexOf(var)) && !toremoveAfterIntersec.contains(var)) {
 
                 getChildren().add(var);
                 if (nationales.indexOf(var) % 2 != 0) {
@@ -388,7 +378,7 @@ public class Reseau extends Pane {
             }
         }
         for (Departemental var : departementales) {
-            if (!toremoveD.contains(departementales.indexOf(var))) {
+            if (!toremoveD.contains(departementales.indexOf(var)) && !toremoveAfterIntersec.contains(var)) {
 
                 getChildren().add(var);
                 if (departementales.indexOf(var) % 2 != 0) {
@@ -406,36 +396,31 @@ public class Reseau extends Pane {
 
     public void printRoute2() {
         for (Route var : routes) {
-            if (!toremoveAfterIntersec.contains(routes.indexOf(var))) {
-                getChildren().add(var);
-                if (var instanceof Departemental) {
+            getChildren().add(var);
+            if (var instanceof Departemental) {
 
-                    txt = new Label("D" + departementales.indexOf(var));
-                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 9));
-                    Point2D mid = var.p_begin.midpoint(var.p_end);
-                    txt.relocate(mid.getX(), mid.getY());
-                    getChildren().add(txt);
-                } else if (var instanceof National) {
+                txt = new Label("D" + departementales.indexOf(var));
+                txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 9));
+                Point2D mid = var.p_begin.midpoint(var.p_end);
+                txt.relocate(mid.getX(), mid.getY());
+                getChildren().add(txt);
+            } else if (var instanceof National) {
 
-                    txt = new Label("N" + nationales.indexOf(var));
-                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 13));
-                    Point2D mid = var.p_begin.midpoint(var.p_end);
-                    txt.relocate(mid.getX(), mid.getY());
-                    getChildren().add(txt);
-                } else if (var instanceof Autoroute) {
+                txt = new Label("N" + nationales.indexOf(var));
+                txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 13));
+                Point2D mid = var.p_begin.midpoint(var.p_end);
+                txt.relocate(mid.getX(), mid.getY());
+                getChildren().add(txt);
+            } else if (var instanceof Autoroute) {
 
-                    txt = new Label("A" + autoroutes.indexOf(var));
-                    txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
-                    Point2D mid = var.p_begin.midpoint(var.p_end);
-                    txt.relocate(mid.getX(), mid.getY());
-                    getChildren().add(txt);
-                }
-
+                txt = new Label("A" + autoroutes.indexOf(var));
+                txt.setFont(Font.font("Verdana", FontWeight.LIGHT, 20));
+                Point2D mid = var.p_begin.midpoint(var.p_end);
+                txt.relocate(mid.getX(), mid.getY());
+                getChildren().add(txt);
             }
+
         }
-        /*
-         * for (Route r : routesAfterIntersec) { getChildren().add(r); }
-         */
 
     }
 
