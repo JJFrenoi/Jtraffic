@@ -167,8 +167,9 @@ public class Reseau extends Pane {
     }
 
     public void compareRoute() {
+        Boolean bol = false;
         for (Autoroute var : autoroutes) {
-
+            bol = false ; 
             for (National v : nationales) {
 
                 if (var.p_begin.equals(v.p_end) && var.p_end.equals(v.p_begin)) {
@@ -178,10 +179,16 @@ public class Reseau extends Pane {
                 Point p = calculIntersection(var.p_begin, var.p_end, v.p_begin, v.p_end);
                 if (verifIntersectExist(var.p_begin, var.p_end, v.p_begin, v.p_end, p) && !var.equals(v)) {
                     intersections.add(p);
+                  /*  if (bol == false) {
+                        randomRoute(var.p_begin, p);
+                        randomRoute(p, var.p_end);
+                        randomRoute(v.p_begin, p);
+                        randomRoute(p, v.p_end);
+                        bol = true ; 
+                    }*/
                 }
-
             }
-
+            bol = false ; 
             for (Departemental x : departementales) {
                 if (var.p_begin.equals(x.p_end) && x.p_end.equals(var.p_begin)) {
                     // System.out.println(departementales.indexOf(x));
@@ -191,21 +198,35 @@ public class Reseau extends Pane {
                 Point p = calculIntersection(var.p_begin, var.p_end, x.p_begin, x.p_end);
                 if (verifIntersectExist(var.p_begin, var.p_end, x.p_begin, x.p_end, p) && !var.equals(x)) {
                     intersections.add(p);
+                   /* if (bol == false) {
+                        randomRoute(var.p_begin, p);
+                        randomRoute(p, var.p_end);
+                        randomRoute(x.p_begin, p);
+                        randomRoute(p, x.p_end);
+                        bol = true ;
+                    }*/
                 }
             }
-
+            bol = false ; 
             for (Autoroute v : autoroutes) {
-                ;
-                // toremoveA.add(autoroutes.indexOf(v)); }
+               
                 Point p = calculIntersection(var.p_begin, var.p_end, v.p_begin, v.p_end);
                 if (verifIntersectExist(var.p_begin, var.p_end, v.p_begin, v.p_end, p) && !var.equals(v)) {
                     intersections.add(p);
+                    /*if (bol == false) {
+                        randomRoute(var.p_begin, p);
+                        randomRoute(p, var.p_end);
+                        randomRoute(v.p_begin, p);
+                        randomRoute(p, v.p_end);
+                        bol = true ; 
+                    }*/
                 }
             }
 
         }
-
+        
         for (National var : nationales) {
+            bol = false ; 
             for (Departemental x : departementales) {
                 if (var.p_begin.equals(x.p_end) && var.p_end.equals(x.p_begin)) {
                     // System.out.println(departementales.indexOf(x));
@@ -215,29 +236,55 @@ public class Reseau extends Pane {
                 Point p = calculIntersection(var.p_begin, var.p_end, x.p_begin, x.p_end);
                 if (verifIntersectExist(var.p_begin, var.p_end, x.p_begin, x.p_end, p) && !var.equals(x)) {
                     intersections.add(p);
+                    /*if (bol == false) {
+                        randomRoute(var.p_begin, p);
+                        randomRoute(p, var.p_end);
+                        randomRoute(x.p_begin, p);
+                        randomRoute(p, x.p_end);
+                        bol = true ;
+                    }*/
+
+                }
+            }
+        }
+        
+        for (Departemental var : departementales) {
+            bol = false ; 
+            for (Departemental x : departementales) {
+                Point p = calculIntersection(var.p_begin, var.p_end, x.p_begin, x.p_end);
+                if (verifIntersectExist(var.p_begin, var.p_end, x.p_begin, x.p_end, p) && !var.equals(x)) {
+                    intersections.add(p);
+                 /*   if (bol == false) {
+                        randomRoute(var.p_begin, p);
+                        randomRoute(p, var.p_end);
+                        randomRoute(x.p_begin, p);
+                        randomRoute(p, x.p_end);
+                        bol = true ; 
+                    }*/
+
+                }
+            }
+        }
+        
+        for (National var : nationales) {
+            bol = false ; 
+            for (National x : nationales) {
+                Point p = calculIntersection(var.p_begin, var.p_end, x.p_begin, x.p_end);
+                if (verifIntersectExist(var.p_begin, var.p_end, x.p_begin, x.p_end, p) && !var.equals(x)) {
+                    intersections.add(p);
+                   /* if (bol == false) {
+                        randomRoute(var.p_begin, p);
+                        randomRoute(p, var.p_end);
+                        randomRoute(x.p_begin, p);
+                        randomRoute(p, x.p_end);
+                        bol = true ;
+                    }*/
+
                 }
             }
         }
 
-        for (Departemental var : departementales) {
-            for (Departemental x : departementales) {
-                Point p = calculIntersection(var.p_begin, var.p_end, x.p_begin, x.p_end);
-                if (verifIntersectExist(var.p_begin, var.p_end, x.p_begin, x.p_end, p) && !var.equals(x)) {
-                       intersections.add(p);
-               }
-            }
-        }
-    
-        for (National var : nationales) {
-            for (National x : nationales) {
-                Point p = calculIntersection(var.p_begin, var.p_end, x.p_begin, x.p_end);
-                if (verifIntersectExist(var.p_begin, var.p_end, x.p_begin, x.p_end, p) && !var.equals(x)) {
-                       intersections.add(p);
-               }
-        }
-    }
-
-    fillRoute();
+        fillRoute();
 
     }
 
@@ -261,7 +308,7 @@ public class Reseau extends Pane {
         }
         System.out.println(path.size());
         try {
-            while (!path.get(path.size() - 1).p_end.equals(c.p_route) || nbCity == 6 ) {
+            while (!path.get(path.size() - 1).p_end.equals(c.p_route) || nbCity == 6) {
                 bol = false;
                 for (Route var : routes) {
                     if (var.p_begin.equals(path.get(path.size() - 1).p_end) && var.p_end.equals(c.p_route)
@@ -282,7 +329,7 @@ public class Reseau extends Pane {
 
                     }
                 }
-                nbCity ++ ;
+                nbCity++;
 
             }
         } catch (Exception e) {
