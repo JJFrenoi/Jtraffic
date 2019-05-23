@@ -11,6 +11,7 @@ import javafx.scene.text.FontWeight;
 
 public class Reseau extends Pane {
     public Moto m, m2;
+    public Voiture v, v2;
     public ArrayList<Point> savedPos = new ArrayList<>();
     public ArrayList<Point> intersections = new ArrayList<>();
     public ArrayList<Double> excludeRowsx = new ArrayList<>();
@@ -27,7 +28,6 @@ public class Reseau extends Pane {
     public ArrayList<Integer> toremoveAfterIntersec = new ArrayList<>();
     Random rand = new Random();
     public Label txt;
-    // public int posx = 0, posy = 0;
     public Point p;
 
     public Reseau() {
@@ -37,33 +37,37 @@ public class Reseau extends Pane {
 
         fillMapRoute();
         compareRoute();
-        findX();
+        //findX();
 
         printRoute();
         printIndexCity();
         printIntersection();
 
-        m = new Moto("Jenaj", cities.get(0).p_route);
-        m.setPath(pathto(m, cities.get(4)));
-        // m2 = new Moto("Jenaj", departementales.get(5).posx_begin,
-        // departementales.get(5).posy_end);
+        m = new Moto("Kawasaki", cities.get(0).p_route);
+        m.setPath(pathto(m, cities.get(6)));
+        m2 = new Moto("Suzuki", cities.get(4).p_route);
+        m2.setPath(pathto(m2, cities.get(2)));
 
+        v = new Voiture("Ferrari", cities.get(0).p_route);
+        v2 = new Voiture("Ford", cities.get(0).p_route);
+        v.setPath(pathto(v, cities.get(3)));
+        v2.setPath(pathto(v2, cities.get(5)));
         getChildren().add(m);
-        // getChildren().add(m2);
+        getChildren().add(m2);
+        getChildren().add(v);
+        getChildren().add(v2);
 
     }
 
     public void createCity() {
-        // this.posx = rand.nextInt(1600);
-        // this.posy = rand.nextInt(700);
+
         this.p = new Point(rand.nextInt(1600), rand.nextInt(700));
         cities.add(new Cities(p));
-        // exclusions(posx, posy);
+
         exclusions(p);
 
         for (int i = 0; i < 6; i++) {
-            // this.posx = nextCity(1, 1600, excludeRowsx);
-            // this.posy = nextCity(1, 700, excludeRowsy);
+
             this.p = nextCity(1, 1600, 1, 700, excludeRowsx, excludeRowsy);
             cities.add(new Cities(p));
 
@@ -73,8 +77,7 @@ public class Reseau extends Pane {
         for (Cities c : cities) {
             getChildren().add(c.city);
             getChildren().add(c.perif);
-            // savedPosx.add(c.posx);
-            // savedPosy.add(c.posy);
+
             savedPos.add(c.p_route);
         }
 
@@ -226,38 +229,31 @@ public class Reseau extends Pane {
     }
 
     public void findX() {
-        // nationales.clear();
-        // departementales.clear();
-        // autoroutes.clear();
+        
         for (Route a : routes) {
             for (Route n : routes) {
 
                 Point p = calculIntersection(a.p_begin, a.p_end, n.p_begin, n.p_end);
                 if (verifIntersectExist(a.p_begin, a.p_end, n.p_begin, n.p_end, p) && !a.equals(n)) {
                     intersections.add(p);
-                    /*
-                     * randomRoute(a.p_begin,p); randomRoute(n.p_begin, p); randomRoute(p, a.p_end);
-                     * randomRoute(p, n.p_end); //toremoveAfterIntersec.add(routes.indexOf(a));
-                     * //toremoveAfterIntersec.add(routes.indexOf(n)); if(a instanceof Autoroute ){
-                     * toremoveA.add(routes.indexOf(a)); } else if (a instanceof National){
-                     * toremoveN.add(routes.indexOf(a));
-                     * 
-                     * } else if (a instanceof Departemental ){ toremoveD.add(routes.indexOf(a)); }
-                     * else if(n instanceof Autoroute ){ toremoveA.add(routes.indexOf(n)); } else if
-                     * (n instanceof National){ toremoveN.add(routes.indexOf(n));
-                     * 
-                     * } else if (n instanceof Departemental ){ toremoveD.add(routes.indexOf(n)); }
-                     * 
-                     */
-                }
+
+                    randomRoute(a.p_begin, p);
+                    randomRoute(n.p_begin, p);
+                    randomRoute(p, a.p_end);
+                    randomRoute(p, n.p_end); 
+
+
+
             }
         }
-
-        // compareRoute();
-
     }
+}
 
-    public ArrayList<Route> pathto(Moto m, Cities c) {
+    // compareRoute();
+
+    
+
+    public ArrayList<Route> pathto(Vehicule m, Cities c) {
         ArrayList<Route> path = new ArrayList<>();
         Boolean bol = false;
         for (Route var : routes) {
@@ -274,12 +270,13 @@ public class Reseau extends Pane {
                 bol = true;
             }
         }
+        System.out.println(path.size());
         try {
             while (!path.get(path.size() - 1).p_end.equals(c.p_route)) {
                 bol = false;
                 for (Route var : routes) {
                     if (var.p_begin.equals(path.get(path.size() - 1).p_end) && var.p_end.equals(c.p_route)
-                            && bol == false) {
+                            && bol == false && !path.contains(var)) {
                         bol = true;
                         path.add(var);
                         System.out.println("il y a de route qui va a 4");
@@ -287,18 +284,19 @@ public class Reseau extends Pane {
                     }
 
                 }
-                //bol = false;
+                // bol = false;
                 for (Route var : routes) {
-                    if (var.p_begin.equals(path.get(path.size() - 1).p_end) && bol == false) {
+                    if (path.get(path.size() - 1).p_end.equals(var.p_begin) && bol == false && !path.contains(var)) {
                         bol = true;
                         path.add(var);
                         System.out.println("j'ai trouive une route qui va a une ville ");
+
                     }
                 }
 
             }
         } catch (Exception e) {
-            System.out.println("marche powa : " + e);
+            System.out.println("La ville n'est pas connecté a une autre ville ");
         }
 
         return path;
