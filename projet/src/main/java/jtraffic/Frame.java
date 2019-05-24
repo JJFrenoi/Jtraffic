@@ -1,29 +1,24 @@
 package jtraffic;
 
 import javafx.scene.control.Button;
-import javafx.animation.AnimationTimer;
-import javafx.animation.Timeline;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.util.Duration;
 
 public class Frame extends Application {
   static final double W = 1640;
@@ -74,10 +69,9 @@ public class Frame extends Application {
     stage.setScene(scene);
     stage.show();
 
-      p.m.play();
-      p.m2.play();
-      p.v.play();
-      p.v2.play();
+    for (Vehicule var : p.tabVehicule) {
+      var.play();
+    }
 
   }
 

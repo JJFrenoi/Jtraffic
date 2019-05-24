@@ -44,6 +44,6 @@ public class Route extends Line {
   public void setAffine() {
     coeffD = ((p_end.getY() - p_begin.getY()) / (p_end.getX() - p_begin.getX()));
     b = p_begin.getY() - coeffD;
-    // System.out.println(coeffD +" b = " + b);
+    
   }
 }
