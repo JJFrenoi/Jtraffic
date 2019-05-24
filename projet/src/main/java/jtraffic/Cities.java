@@ -1,7 +1,6 @@
 package jtraffic;
 
-import java.util.ArrayList;
-import java.util.Random;
+
 
 import javafx.scene.Node;
 import javafx.scene.image.Image;

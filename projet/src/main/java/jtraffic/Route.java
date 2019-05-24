@@ -1,11 +1,7 @@
 package jtraffic;
 
-import com.sun.javafx.geom.Shape;
-import java.lang.Math.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
@@ -13,10 +9,6 @@ import javafx.scene.shape.StrokeType;
 public class Route extends Line {
   public Point p_begin;
   public Point p_end;
-  // public double posx_begin ;
-  // public double posy_begin ;
-  // public double posx_end ;
-  // public double posy_end ;
   public Color p;
   public int taille;
   public int vitesse;

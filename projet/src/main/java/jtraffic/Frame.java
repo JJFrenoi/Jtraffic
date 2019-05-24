@@ -33,11 +33,11 @@ public class Frame extends Application {
 
     HBox hbox = new HBox();
     hbox.setAlignment(Pos.CENTER);
-    hbox.setStyle("-fx-background-color: rgba(55, 0, 244, 0.5);");
+    hbox.setStyle("-fx-background-color: rgba(0, 0, 255, 0.5);");
 
     VBox box = new VBox();
     box.setAlignment(Pos.CENTER);
-    box.setStyle("-fx-background-color: rgba(255, 0, 244, 0.5);");
+    box.setStyle("-fx-background-color: rgba(255, 0, 0, 0.5);");
 
     String javaVersion = System.getProperty("java.version");
     String javafxVersion = System.getProperty("javafx.version");
